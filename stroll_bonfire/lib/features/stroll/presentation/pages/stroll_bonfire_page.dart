@@ -27,7 +27,7 @@ class StrollBonfirePage extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage('assets/images/Background.jpg'),
             fit: BoxFit.fitWidth,
-            alignment: Alignment(0.0, -1.3), // Push image way higher up
+            alignment: Alignment(0.0, -1.8), // Push image way higher up
           ),
         ),
         child: Container(
@@ -35,13 +35,13 @@ class StrollBonfirePage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.0, 0.35, 0.6, 1.0], // More control points
-              colors: [
-                Colors.transparent, // Top stays transparent
-                Colors.black.withValues(alpha: 0.2), // Light fade starts
-                Colors.black.withValues(alpha: 0.8), // Heavy darkness in middle
-                Colors.black.withValues(alpha: 1.0), // Complete black at bottom
-              ],
+              stops: const [0.0, 0.4, 0.7, 1.0], // More control points
+                colors: [
+                  Colors.transparent, // 0% - 40%: Completely transparent
+                  Colors.black.withValues(alpha: 0.5), // 40%: Light darkening starts
+                  Colors.black.withValues(alpha: 1), // 70%: Heavy darkening
+                  Colors.black.withValues(alpha: 1.0), // 100%: Complete black
+                ],
             ),
           ),
           child: SafeArea(
@@ -78,12 +78,12 @@ class StrollBonfirePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
+Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
     return Column(
       children: [
         // Top section with header
         Expanded(
-          flex: 75, // Reduced to make more room for bottom
+          flex: 65, // Reduced from 75 to give more space to bottom
           child: Padding(
             padding: ResponsiveUtils.defaultScreenPadding,
             child: Column(
@@ -97,7 +97,7 @@ class StrollBonfirePage extends StatelessWidget {
         ),
         // Bottom section with content
         Expanded(
-          flex: 75, // Increased to accommodate more content
+          flex: 80, // Increased from 75 to give more space for larger icons
           child: Container(
             // Add extra dark overlay to bottom section for better readability
             decoration: BoxDecoration(
@@ -110,20 +110,22 @@ class StrollBonfirePage extends StatelessWidget {
                 ],
               ),
             ),
-            child: Padding(
-              padding: ResponsiveUtils.defaultScreenPadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildProfileSection(state.currentUser, state.currentQuestion),
-                  SizedBox(height: 16.h),
-                  _buildOptionsGrid(context, state),
-                  SizedBox(height: 12.h),
-                  _buildBottomSection(context, state),
-                  SizedBox(height: 16.h),
-                  const BottomNavigation(),
-                  SizedBox(height: 16.h),
-                ],
+            child: SingleChildScrollView( // Add scrolling to prevent overflow
+              child: Padding(
+                padding: ResponsiveUtils.defaultScreenPadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProfileSection(state.currentUser, state.currentQuestion),
+                    SizedBox(height: 10.h), // Further reduced spacing
+                    _buildOptionsGrid(context, state),
+                    SizedBox(height: 6.h), // Further reduced spacing
+                    _buildBottomSection(context, state),
+                    SizedBox(height: 6.h), // Further reduced spacing
+                    const BottomNavigation(),
+                    SizedBox(height: 12.h), // Extra space at bottom for larger icons
+                  ],
+                ),
               ),
             ),
           ),
@@ -139,38 +141,67 @@ class StrollBonfirePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Profile image and name
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start, // Align items to top
-            children: [
-              _buildProfileImage(user),
-              SizedBox(width: 12.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+          Padding(
+            padding: EdgeInsets.only(top: 40.h), // Increased from 20.h to 40.h for more visible movement
+            child: Stack(
+              clipBehavior: Clip.none, // Allow overflow
+              children: [
+                // Name container (behind - first layer)
+                Positioned(
+                  left: 28.w, // Position to go behind image
+                  top: 0,
+                  child: Container(
+                    width: 130.w,
+                    padding: EdgeInsets.only(
+                      left: 50.w,
+                      right: 16.w,
+                      top: 4.h, 
+                      bottom: 4.h
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF0D0F11), // Background #0D0F11
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Text(
                       '${user.name}, ${user.age}',
                       style: TextStyle(
-                        fontSize: 12.sp, // Reduced from 16.sp
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
                       ),
+                      textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 8.h), // Small gap between name and question
-                    Text(
-                      question.text,
-                      style: TextStyle(
-                        fontSize: 18.sp, // Reduced from 20.sp
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
-                        height: 1.3, // Added line height for better readability
-                        letterSpacing: 1.0, // Stretch text horizontally
+                  ),
+                ),
+                // Profile image (in front - second layer)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProfileImage(user),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h), // Reduced from 30.h - less space for name background
+                          SizedBox(height: 6.h), // Reduced from 8.h - smaller gap between name and question
+                          Text(
+                            question.text,
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.white,
+                              height: 1.3,
+                              letterSpacing: 1.0,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(height: 12.h), // Spacing before author answer
           // Author answer (centered on its own)
@@ -190,13 +221,18 @@ class StrollBonfirePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileImage(User user) {
-    return Container(
+Widget _buildProfileImage(User user) {
+  return Container(
+    padding: EdgeInsets.all(8.w), // Padding around the profile image
+    decoration: BoxDecoration(
+      color: const Color(0xFF0D0F11), // Background color #0D0F11
+      borderRadius: BorderRadius.circular(32.r), // Rounded corners
+    ),
+    child: Container(
       width: 50.w,
       height: 50.w,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        // NO BORDER, NO GREEN DOT - completely clean!
       ),
       child: ClipOval(
         child: Image.asset(
@@ -214,8 +250,9 @@ class StrollBonfirePage extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
 Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     return Column(
@@ -338,7 +375,8 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     );
   }
 
-Widget _buildBottomSection(BuildContext context, StrollLoaded state) {
+  // Option 1: Reduce spacing between text and buttons
+  Widget _buildBottomSection(BuildContext context, StrollLoaded state) {
     return Row(
       children: [
         Expanded(
@@ -348,23 +386,23 @@ Widget _buildBottomSection(BuildContext context, StrollLoaded state) {
               Text(
                 'Pick your option.',
                 style: TextStyle(
-                  fontSize: 12.sp, // Reduced to 12px
-                  color: const Color(0xFFE5E5E5), // Color #E5E5E5
+                  fontSize: 12.sp,
+                  color: const Color(0xFFE5E5E5),
                   fontWeight: FontWeight.w400,
                 ),
               ),
               Text(
                 'See who has a similar mind.',
                 style: TextStyle(
-                  fontSize: 12.sp, // Reduced to 12px
-                  color: const Color(0xFFE5E5E5), // Color #E5E5E5
+                  fontSize: 12.sp,
+                  color: const Color(0xFFE5E5E5),
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ],
           ),
         ),
-        SizedBox(width: 20.w),
+        SizedBox(width: 10.w), // Reduced from 20.w to 10.w
         ActionButtons(
           isNextEnabled: context.read<StrollCubit>().isNextEnabled,
           isProcessing: state.isProcessing,

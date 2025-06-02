@@ -13,10 +13,10 @@ class BottomNavigation extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        NavIcon('/icons/cards.svg', Icons.credit_card, false),
-        NavIcon('/icons/chat.svg', Icons.chat_bubble_outline, false), 
-        NavIcon('/icons/fire.svg', Icons.local_fire_department, true),
-        NavIcon('/icons/user.svg', Icons.person_outline, false),
+        NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
+        NavIcon('assets/icons/fire.svg', Icons.local_fire_department, true), // Moved fire before chat
+        NavIcon('assets/icons/chat.svg', Icons.chat_bubble_outline, false), 
+        NavIcon('assets/icons/user.svg', Icons.person_outline, false),
       ],
     );
   }
@@ -42,8 +42,8 @@ class NavIcon extends StatelessWidget {
           if (snapshot.hasData && snapshot.data == true) {
             return SvgPicture.asset(
               iconPath,
-              width: 28.w,
-              height: 28.w,
+              width: _getIconSize(), // Dynamic sizing based on icon type
+              height: _getIconSize(), // Dynamic sizing based on icon type
               colorFilter: ColorFilter.mode(
                 isActive ? AppColors.white : AppColors.white60,
                 BlendMode.srcIn,
@@ -55,11 +55,25 @@ class NavIcon extends StatelessWidget {
           return Icon(
             fallbackIcon,
             color: isActive ? AppColors.white : AppColors.white60,
-            size: 28.sp,
+            size: _getIconSize(), // Dynamic sizing for fallback icons too
           );
         },
       ),
     );
+  }
+
+  // Specific sizing for user icon to match others
+  double _getIconSize() {
+    if (iconPath.contains('user.svg')) {
+      return 45.w; // Larger size specifically for user icon
+    }
+    if (iconPath.contains('fire.svg')) {
+      return 30.w; // Slightly larger for fire icon
+    }
+    if (iconPath.contains('chat.svg')) {
+      return 25.w; // Slightly larger for chat icon
+    }
+    return 27.w; // Default size for other icons
   }
 
   Future<bool> _assetExists(BuildContext context, String path) async {
