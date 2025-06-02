@@ -573,11 +573,11 @@ class ActionButton extends StatelessWidget {
         width: ResponsiveUtils.width(64),
         height: ResponsiveUtils.width(64),
         decoration: BoxDecoration(
-          color: isEnabled ? color : color.withOpacity(0.5),
+          color: isEnabled ? color : color.withValues(alpha: 0.5),
           shape: BoxShape.circle,
           boxShadow: isEnabled ? [
             BoxShadow(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               blurRadius: 12,
               offset: const Offset(0, 6),
             ),
