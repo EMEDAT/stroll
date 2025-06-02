@@ -24,10 +24,9 @@ class StrollBonfirePage extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: AppColors.backgroundGradient,
+          image: DecorationImage(
+            image: AssetImage('assets/images/Background.jpg'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Container(
@@ -36,8 +35,7 @@ class StrollBonfirePage extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withValues(alpha: 0.3),
-                Colors.black.withValues(alpha: 0.4),
+                Colors.black.withValues(alpha: 0.2),
                 Colors.black.withValues(alpha: 0.6),
               ],
             ),

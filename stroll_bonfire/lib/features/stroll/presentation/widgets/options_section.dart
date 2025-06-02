@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/responsive_utils.dart';
 import '../../domain/entities/question.dart';
 
-/// Options Section Widget - Displays question options
+/// Options Section Widget - Displays question options in 2x2 grid
 class OptionsSection extends StatelessWidget {
   final List<QuestionOption> options;
   final int selectedIndex;
@@ -28,36 +27,72 @@ class OptionsSection extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         SizedBox(height: 24.h),
-        ...options.asMap().entries.map((entry) {
-          final index = entry.key;
-          final option = entry.value;
-          final isSelected = selectedIndex == index;
-          
-          return Padding(
-            padding: EdgeInsets.only(bottom: 12.h),
-            child: OptionCard(
-              option: option,
-              isSelected: isSelected,
-              onTap: () => onOptionSelected(index),
+        // 2x2 Grid of options
+        Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: OptionCard(
+                    option: options[0],
+                    isSelected: selectedIndex == 0,
+                    onTap: () => onOptionSelected(0),
+                    label: 'A',
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: OptionCard(
+                    option: options[1],
+                    isSelected: selectedIndex == 1,
+                    onTap: () => onOptionSelected(1),
+                    label: 'B',
+                  ),
+                ),
+              ],
             ),
-          );
-        }),
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                Expanded(
+                  child: OptionCard(
+                    option: options[2],
+                    isSelected: selectedIndex == 2,
+                    onTap: () => onOptionSelected(2),
+                    label: 'C',
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: OptionCard(
+                    option: options[3],
+                    isSelected: selectedIndex == 3,
+                    onTap: () => onOptionSelected(3),
+                    label: 'D',
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     );
   }
 }
 
-/// Option Card Widget - Individual option card
+/// Option Card Widget - Individual option card with label
 class OptionCard extends StatelessWidget {
   final QuestionOption option;
   final bool isSelected;
   final VoidCallback onTap;
+  final String label;
 
   const OptionCard({
     super.key,
     required this.option,
     required this.isSelected,
     required this.onTap,
+    required this.label,
   });
 
   @override
@@ -70,52 +105,57 @@ class OptionCard extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: isSelected 
-              ? AppColors.glassmorphismSelected 
-              : AppColors.glassmorphismBackground,
-          borderRadius: ResponsiveUtils.buttonBorderRadius,
+              ? Colors.blue.withValues(alpha: 0.3) 
+              : Colors.black.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isSelected 
-                ? AppColors.glassmorphismSelectedBorder 
-                : AppColors.glassmorphismBorder,
+            color: isSelected ? Colors.blue : Colors.white.withValues(alpha: 0.3),
             width: isSelected ? 2 : 1,
           ),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: Colors.white.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ] : null,
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildOptionIcon(),
-            SizedBox(width: 14.w),
-            Expanded(
-              child: Text(
-                option.text,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            Row(
+              children: [
+                Container(
+                  width: 24.w,
+                  height: 24.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.white, width: 2),
+                  ),
+                  child: Center(
+                    child: Text(
+                      label,
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ),
+                const Spacer(),
+                Icon(
+                  option.icon,
+                  color: AppColors.white,
+                  size: 20.sp,
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Text(
+              option.text,
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                height: 1.3,
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildOptionIcon() {
-    return Container(
-      padding: EdgeInsets.all(10.w),
-      decoration: BoxDecoration(
-        color: option.backgroundColor,
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Icon(
-        option.icon,
-        color: AppColors.white,
-        size: 20.sp,
       ),
     );
   }

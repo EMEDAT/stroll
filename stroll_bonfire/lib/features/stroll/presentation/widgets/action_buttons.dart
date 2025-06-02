@@ -24,14 +24,8 @@ class ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ActionButton(
-          icon: Icons.close,
-          color: AppColors.rejectRed,
-          onTap: onSkip,
-          isEnabled: !isProcessing,
-        ),
         ActionButton(
           icon: Icons.mic,
           color: AppColors.micBlue,
