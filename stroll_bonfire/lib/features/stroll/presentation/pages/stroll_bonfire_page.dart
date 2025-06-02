@@ -217,7 +217,7 @@ class StrollBonfirePage extends StatelessWidget {
     );
   }
 
-  Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
+Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     return Column(
       children: [
         Row(
@@ -232,7 +232,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(0),
               ),
             ),
-            SizedBox(width: 12.w), // Increased spacing
+            SizedBox(width: 12.w),
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -245,7 +245,7 @@ class StrollBonfirePage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h), // Increased spacing
+        SizedBox(height: 12.h),
         Row(
           children: [
             Expanded(
@@ -258,7 +258,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(2),
               ),
             ),
-            SizedBox(width: 12.w), // Increased spacing
+            SizedBox(width: 12.w),
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -281,54 +281,55 @@ class StrollBonfirePage extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 70.h, // Increased height for better touch targets
-        padding: EdgeInsets.all(14.w), // Increased padding
+        height: 50.h,
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected 
-              ? Colors.blue.withValues(alpha: 0.4) 
-              : Colors.black.withValues(alpha: 0.4), // More opacity for better visibility
-          borderRadius: BorderRadius.circular(16.r),
+          color: const Color(0xFF232A2E), // Background color #232A2E
+          borderRadius: BorderRadius.circular(10.r),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.white.withValues(alpha: 0.4),
+            color: isSelected ? const Color(0xFF8B88EF) : Colors.transparent, // Border color #8B88EF
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Row( // Changed from Column to Row for horizontal layout
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Letter circle on the LEFT
             Container(
-              width: 24.w, // Slightly larger
-              height: 24.w,
+              width: 20.w,
+              height: 20.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.white, width: 1.5),
+                color: isSelected ? const Color(0xFF8B88EF) : Colors.transparent, // Fill with border color when selected
+                border: Border.all(
+                  color: isSelected ? const Color(0xFF8B88EF) : const Color(0xFFC4C4C4), // Blue border when selected
+                  width: 1.5,
+                ),
               ),
               child: Center(
                 child: Text(
                   label,
                   style: TextStyle(
-                    color: AppColors.white,
+                    color: isSelected ? Colors.white : const Color(0xFFC4C4C4), // White text when selected
                     fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
             ),
+            SizedBox(width: 8.w), // Space between letter and text
+            // Option text on the RIGHT
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 4.h),
-                child: Text(
-                  questionOption.text,
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w500,
-                    height: 1.2,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              child: Text(
+                questionOption.text,
+                style: TextStyle(
+                  color: const Color(0xFFC4C4C4), // Text color #C4C4C4
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  height: 1.2,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
