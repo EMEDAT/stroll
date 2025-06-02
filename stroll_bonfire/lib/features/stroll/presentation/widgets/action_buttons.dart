@@ -83,7 +83,7 @@ class ActionButton extends StatelessWidget {
         child: Icon(
           Icons.arrow_forward,
           color: Colors.black,
-          size: 28.sp,
+          size: 32.sp,
         ),
       ),
     );
