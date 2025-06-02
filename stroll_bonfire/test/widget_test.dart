@@ -11,20 +11,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:stroll_bonfire/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Stroll Bonfire app loads correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const StrollBonfireApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that our app shows the correct header.
+    expect(find.text('Stroll Bonfire'), findsOneWidget);
+    expect(find.text('Angelko, 28'), findsOneWidget);
+    expect(find.text('What is your favorite time of the day?'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that options are present
+    expect(find.text('The peace in the\nearly mornings'), findsOneWidget);
+    expect(find.text('The magical\ngolden hours'), findsOneWidget);
   });
 }
