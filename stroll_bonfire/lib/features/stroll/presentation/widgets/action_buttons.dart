@@ -24,7 +24,7 @@ class ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center, // ← CHANGED
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // ← CHANGED
       children: [
         ActionButton(
           iconPath: 'assets/icons/microphone.svg',
@@ -33,7 +33,7 @@ class ActionButtons extends StatelessWidget {
           isEnabled: !isProcessing,
           isNextButton: false,
         ),
-        SizedBox(width: 6.w), // ← ADD THIS GAP
+        SizedBox(width: 10.w), // ← ADD THIS GAP
         ActionButton(
           iconPath: 'assets/icons/next.svg',
           fallbackIcon: Icons.arrow_forward,

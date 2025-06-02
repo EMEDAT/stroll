@@ -11,12 +11,27 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
-        NavIcon('assets/icons/fire.svg', Icons.local_fire_department, true), // Moved fire before chat
-        NavIcon('assets/icons/chat.svg', Icons.chat_bubble_outline, false), 
-        NavIcon('assets/icons/user.svg', Icons.person_outline, false),
+        Expanded(
+          child: Center(
+            child: NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: NavIcon('assets/icons/fire.svg', Icons.local_fire_department, true),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: NavIcon('assets/icons/chat.svg', Icons.chat_bubble_outline, false),
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: NavIcon('assets/icons/user.svg', Icons.person_outline, false),
+          ),
+        ),
       ],
     );
   }
@@ -34,7 +49,7 @@ class NavIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.all(8.w),
+      padding: EdgeInsets.all(12.w), // Increased padding for larger touch area
       child: FutureBuilder<bool>(
         future: _assetExists(context, iconPath),
         builder: (context, snapshot) {
@@ -42,8 +57,8 @@ class NavIcon extends StatelessWidget {
           if (snapshot.hasData && snapshot.data == true) {
             return SvgPicture.asset(
               iconPath,
-              width: _getIconSize(), // Dynamic sizing based on icon type
-              height: _getIconSize(), // Dynamic sizing based on icon type
+              width: _getIconSize(),
+              height: _getIconSize(),
               colorFilter: ColorFilter.mode(
                 isActive ? AppColors.white : AppColors.white60,
                 BlendMode.srcIn,
@@ -55,7 +70,7 @@ class NavIcon extends StatelessWidget {
           return Icon(
             fallbackIcon,
             color: isActive ? AppColors.white : AppColors.white60,
-            size: _getIconSize(), // Dynamic sizing for fallback icons too
+            size: _getIconSize(),
           );
         },
       ),
@@ -73,7 +88,7 @@ class NavIcon extends StatelessWidget {
     if (iconPath.contains('chat.svg')) {
       return 25.w; // Slightly larger for chat icon
     }
-    return 27.w; // Default size for other icons
+    return 29.w; // Default size for other icons
   }
 
   Future<bool> _assetExists(BuildContext context, String path) async {
