@@ -14,7 +14,7 @@ class StrollHeader extends StatelessWidget {
         // Main title with dropdown
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center, // Vertical alignment middle
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
@@ -30,15 +30,27 @@ class StrollHeader extends StatelessWidget {
                 'Stroll Bonfire',
                 style: TextStyle(
                   fontFamily: 'Proxima Nova',
-                  fontSize: 34,
+                  fontSize: 28.sp, // Reduced from 34
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
-                  height: 1.0, // Line height 100%
+                  height: 1.0,
                   letterSpacing: 0,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(0, 2),
+                      blurRadius: 3,
+                      color: Colors.black.withValues(alpha: 0.5),
+                    ),
+                    Shadow(
+                      offset: Offset(0, 4),
+                      blurRadius: 16,
+                      color: Colors.black.withValues(alpha: 0.3),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(width: 8.w),
+            SizedBox(width: 6.w), // Reduced spacing
             ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
                 begin: Alignment.topCenter,
@@ -52,18 +64,25 @@ class StrollHeader extends StatelessWidget {
               child: Icon(
                 Icons.keyboard_arrow_down,
                 color: Colors.white,
-                size: 24.sp,
+                size: 20.sp, // Reduced from 24
+                shadows: [
+                  Shadow(
+                    offset: Offset(0, 2),
+                    blurRadius: 8,
+                    color: Colors.black.withValues(alpha: 0.5),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 6.h), // Reduced spacing
         // Stats below title
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildStatItem(Icons.access_time, '22h 00m'),
-            SizedBox(width: 6.w),
+            SizedBox(width: 4.w), // Reduced spacing
             _buildStatItem(Icons.person, '103'),
           ],
         ),
@@ -77,15 +96,29 @@ class StrollHeader extends StatelessWidget {
         Icon(
           icon,
           color: AppColors.white70,
-          size: 15.sp,
+          size: 12.sp, // Reduced from 15
+          shadows: [
+            Shadow(
+              offset: Offset(0, 1),
+              blurRadius: 4,
+              color: Colors.black.withValues(alpha: 0.3),
+            ),
+          ],
         ),
-        SizedBox(width: 4.w),
+        SizedBox(width: 3.w), // Reduced spacing
         Text(
           text,
           style: TextStyle(
             color: AppColors.white70,
-            fontSize: 14.sp,
+            fontSize: 12.sp, // Reduced from 14
             fontWeight: FontWeight.w600,
+            shadows: [
+              Shadow(
+                offset: Offset(0, 1),
+                blurRadius: 4,
+                color: Colors.black.withValues(alpha: 0.4),
+              ),
+            ],
           ),
         ),
       ],

@@ -26,7 +26,8 @@ class StrollBonfirePage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/Background.jpg'),
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
+            alignment: Alignment(0.0, -1.5), // Push image way higher up
           ),
         ),
         child: Container(
@@ -34,11 +35,12 @@ class StrollBonfirePage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.0, 0.3, 1.0],
+              stops: const [0.0, 0.35, 0.6, 1.0], // More control points
               colors: [
-                Colors.transparent,
-                Colors.black.withValues(alpha: 0.6),
-                Colors.black.withValues(alpha: 1.0), // Complete black coverage
+                Colors.transparent, // Top stays transparent
+                Colors.black.withValues(alpha: 0.2), // Light fade starts
+                Colors.black.withValues(alpha: 0.8), // Heavy darkness in middle
+                Colors.black.withValues(alpha: 1.0), // Complete black at bottom
               ],
             ),
           ),
@@ -81,35 +83,48 @@ class StrollBonfirePage extends StatelessWidget {
       children: [
         // Top section with header
         Expanded(
-          flex: 45, // Reduced from 60% to 45%
+          flex: 40, // Reduced to make more room for bottom
           child: Padding(
             padding: ResponsiveUtils.defaultScreenPadding,
             child: Column(
               children: [
-                SizedBox(height: 16.h),
+                const Spacer(flex: 1), // Push header down with spacer
                 const StrollHeader(),
-                const Spacer(),
+                const Spacer(flex: 2), // Small spacer at bottom
               ],
             ),
           ),
         ),
-        // Bottom section with content - MOVED UP!
+        // Bottom section with content
         Expanded(
-          flex: 55, // Increased from 40% to 55%
-          child: Padding(
-            padding: ResponsiveUtils.defaultScreenPadding,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildProfileSection(state.currentUser, state.currentQuestion),
-                SizedBox(height: 16.h), // Reduced spacing
-                _buildOptionsGrid(context, state),
-                SizedBox(height: 12.h), // Add small gap before bottom section
-                _buildBottomSection(context, state),
-                SizedBox(height: 16.h), // Reduced spacing
-                const BottomNavigation(),
-                SizedBox(height: 16.h), // Reduced bottom padding
-              ],
+          flex: 65, // Increased to accommodate more content
+          child: Container(
+            // Add extra dark overlay to bottom section for better readability
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  Colors.black.withValues(alpha: 0.3),
+                ],
+              ),
+            ),
+            child: Padding(
+              padding: ResponsiveUtils.defaultScreenPadding,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildProfileSection(state.currentUser, state.currentQuestion),
+                  SizedBox(height: 16.h),
+                  _buildOptionsGrid(context, state),
+                  SizedBox(height: 12.h),
+                  _buildBottomSection(context, state),
+                  SizedBox(height: 16.h),
+                  const BottomNavigation(),
+                  SizedBox(height: 16.h),
+                ],
+              ),
             ),
           ),
         ),
@@ -125,34 +140,34 @@ class StrollBonfirePage extends StatelessWidget {
         Row(
           children: [
             _buildProfileImage(user),
-            SizedBox(width: 12.w), // Reduced spacing
+            SizedBox(width: 12.w),
             Text(
               '${user.name}, ${user.age}',
               style: TextStyle(
-                fontSize: 11.sp, // Reduced from 24
+                fontSize: 18.sp, // Slightly increased for better visibility
                 fontWeight: FontWeight.w700,
                 color: AppColors.white,
               ),
             ),
           ],
         ),
-        SizedBox(height: 16.h), // Reduced from 20
+        SizedBox(height: 16.h),
         // Question text
         Text(
           question.text,
           style: TextStyle(
-            fontSize: 20.sp, // Reduced from 32
+            fontSize: 24.sp, // Increased for better hierarchy
             fontWeight: FontWeight.w700,
             color: AppColors.white,
-            height: 1.1, // Tighter line height
+            height: 1.1,
           ),
         ),
-        SizedBox(height: 8.h), // Reduced from 12
+        SizedBox(height: 8.h),
         // Author answer
         Text(
           '"${question.authorAnswer}"',
           style: TextStyle(
-            fontSize: 12.sp, // Reduced from 16
+            fontSize: 14.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.white70,
             fontStyle: FontStyle.italic,
@@ -166,13 +181,13 @@ class StrollBonfirePage extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 40.w, // Reduced from 60
-          height: 40.w, // Reduced from 60
+          width: 50.w, // Slightly larger for better visibility
+          height: 50.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
               color: user.isOnline ? AppColors.onlineGreen : AppColors.white40,
-              width: 2, // Reduced from 3
+              width: 2,
             ),
           ),
           child: ClipOval(
@@ -185,7 +200,7 @@ class StrollBonfirePage extends StatelessWidget {
                   child: Icon(
                     Icons.person,
                     color: AppColors.white,
-                    size: 24.sp, // Reduced from 32
+                    size: 28.sp,
                   ),
                 );
               },
@@ -197,8 +212,8 @@ class StrollBonfirePage extends StatelessWidget {
             bottom: 2,
             right: 2,
             child: Container(
-              width: 10.w, // Reduced from 12
-              height: 10.w, // Reduced from 12
+              width: 12.w,
+              height: 12.w,
               decoration: const BoxDecoration(
                 color: AppColors.onlineGreen,
                 shape: BoxShape.circle,
@@ -224,7 +239,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(0),
               ),
             ),
-            SizedBox(width: 8.w), // Reduced spacing
+            SizedBox(width: 12.w), // Increased spacing
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -237,7 +252,7 @@ class StrollBonfirePage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 8.h), // Reduced spacing
+        SizedBox(height: 12.h), // Increased spacing
         Row(
           children: [
             Expanded(
@@ -250,7 +265,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(2),
               ),
             ),
-            SizedBox(width: 8.w), // Reduced spacing
+            SizedBox(width: 12.w), // Increased spacing
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -273,52 +288,54 @@ class StrollBonfirePage extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 60.h, // Reduced from 100
-        padding: EdgeInsets.all(12.w), // Reduced padding
+        height: 70.h, // Increased height for better touch targets
+        padding: EdgeInsets.all(14.w), // Increased padding
         decoration: BoxDecoration(
           color: isSelected 
-              ? Colors.blue.withValues(alpha: 0.3) 
-              : Colors.black.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(12.r), // Smaller radius
+              ? Colors.blue.withValues(alpha: 0.4) 
+              : Colors.black.withValues(alpha: 0.4), // More opacity for better visibility
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.white.withValues(alpha: 0.3),
+            color: isSelected ? Colors.blue : Colors.white.withValues(alpha: 0.4),
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 20.w, // Reduced from 24
-              height: 20.w, // Reduced from 24
+              width: 24.w, // Slightly larger
+              height: 24.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.white, width: 1.5), // Thinner border
+                border: Border.all(color: AppColors.white, width: 1.5),
               ),
               child: Center(
                 child: Text(
                   label,
                   style: TextStyle(
                     color: AppColors.white,
-                    fontSize: 14.sp, // Reduced from 12
-                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 8.h), // Reduced spacing
             Expanded(
-              child: Text(
-                questionOption.text,
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 14.sp, // Reduced from 14
-                  fontWeight: FontWeight.w400,
-                  height: 1.2, // Tighter line height
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4.h),
+                child: Text(
+                  questionOption.text,
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w500,
+                    height: 1.2,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
