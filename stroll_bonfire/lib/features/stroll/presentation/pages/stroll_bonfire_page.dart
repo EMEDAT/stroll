@@ -111,23 +111,31 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                 ],
               ),
             ),
-            child: SingleChildScrollView( // Add scrolling to prevent overflow
-              child: Padding(
-                padding: ResponsiveUtils.defaultScreenPadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildProfileSection(state.currentUser, state.currentQuestion),
-                    SizedBox(height: 10.h), // Further reduced spacing
-                    _buildOptionsGrid(context, state),
-                    SizedBox(height: 6.h), // Further reduced spacing
-                    _buildBottomSection(context, state),
-                    SizedBox(height: 6.h), // Further reduced spacing
-                    const BottomNavigation(),
-                    SizedBox(height: 12.h), // Extra space at bottom for larger icons
-                  ],
+            child: Column( // Changed from SingleChildScrollView to Column
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Content section with padding
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: ResponsiveUtils.defaultScreenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildProfileSection(state.currentUser, state.currentQuestion),
+                          SizedBox(height: 10.h), // Further reduced spacing
+                          _buildOptionsGrid(context, state),
+                          SizedBox(height: 6.h), // Further reduced spacing
+                          _buildBottomSection(context, state),
+                          SizedBox(height: 16.h), // Space before bottom nav
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                // Bottom navigation without padding - full width
+                const BottomNavigation(),
+              ],
             ),
           ),
         ),

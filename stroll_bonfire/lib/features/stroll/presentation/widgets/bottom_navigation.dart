@@ -6,12 +6,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width, // FULL SCREEN WIDTH
       color: const Color(0xFF0F1115), // #0F1115 BACKGROUND
-      padding: EdgeInsets.symmetric(vertical: 12.h), // NO horizontal padding, only vertical
+      padding: EdgeInsets.only(
+        top: 8.h, // Reduced from 12.h to move closer to top
+        bottom: 4.h, // Keep bottom padding for safe area
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Use spaceEvenly for wider spread
         children: [
@@ -38,23 +42,23 @@ class BottomNavigation extends StatelessWidget {
         icon,
         if (showDot) // Purple dot badge
           Positioned(
-            top: 8.h,
-            right: 8.w,
+            top: 12.h,
+            right: 5.w,
             child: Container(
-              width: 8.w,
+              width: 12.w,
               height: 8.w,
-              decoration: const BoxDecoration(
-                color: Color(0xFFB5B2FF), // Background #B5B2FF
-                shape: BoxShape.circle,
+              decoration: BoxDecoration(
+                color: const Color(0xFFB5B2FF), // Background #B5B2FF
+                borderRadius: BorderRadius.circular(4.r), // Add this line for border radius
               ),
             ),
           ),
         if (count != null) // Purple count badge
           Positioned(
-            top: 6.h,
-            right: 6.w,
+            top: 9.h,
+            right: 2.w,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
               decoration: BoxDecoration(
                 color: const Color(0xFFB5B2FF), // Background #B5B2FF
                 borderRadius: BorderRadius.circular(8.r),
@@ -62,9 +66,9 @@ class BottomNavigation extends StatelessWidget {
               child: Text(
                 count.toString(),
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.w600,
+                  color: const Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 7.sp,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
