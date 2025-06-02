@@ -144,7 +144,7 @@ class StrollBonfirePage extends StatelessWidget {
             Text(
               '${user.name}, ${user.age}',
               style: TextStyle(
-                fontSize: 12.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColors.white,
               ),
