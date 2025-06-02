@@ -201,7 +201,7 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                               fontWeight: FontWeight.w700,
                               color: AppColors.white,
                               height: 1.3,
-                              letterSpacing: 1.0,
+                              letterSpacing: 0,
                             ),
                           ),
                         ],
