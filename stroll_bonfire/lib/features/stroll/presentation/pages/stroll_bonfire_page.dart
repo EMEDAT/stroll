@@ -133,92 +133,87 @@ class StrollBonfirePage extends StatelessWidget {
   }
 
   Widget _buildProfileSection(User user, Question question) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Profile image and name
-        Row(
-          children: [
-            _buildProfileImage(user),
-            SizedBox(width: 12.w),
-            Text(
-              '${user.name}, ${user.age}',
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.w), // Added horizontal padding to entire profile section
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Profile image and name
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start, // Align items to top
+            children: [
+              _buildProfileImage(user),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${user.name}, ${user.age}',
+                      style: TextStyle(
+                        fontSize: 12.sp, // Reduced from 16.sp
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white,
+                      ),
+                    ),
+                    SizedBox(height: 8.h), // Small gap between name and question
+                    Text(
+                      question.text,
+                      style: TextStyle(
+                        fontSize: 18.sp, // Reduced from 20.sp
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.white,
+                        height: 1.3, // Added line height for better readability
+                        letterSpacing: 1.0, // Stretch text horizontally
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h), // Spacing before author answer
+          // Author answer (centered on its own)
+          Center(
+            child: Text(
+              '"${question.authorAnswer}"',
               style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w700,
-                color: AppColors.white,
+                fontSize: 12.sp, // 12px as requested
+                fontWeight: FontWeight.w400, // 400 weight
+                color: const Color(0xFFCBC9FF).withValues(alpha: 0.7), // #CBC9FFB2 text color
+                fontStyle: FontStyle.italic, // Italic style
               ),
             ),
-          ],
-        ),
-        SizedBox(height: 16.h),
-        // Question text
-        Text(
-          question.text,
-          style: TextStyle(
-            fontSize: 20.sp, // Increased for better hierarchy
-            fontWeight: FontWeight.w700,
-            color: AppColors.white,
-            height: 1.1,
           ),
-        ),
-        SizedBox(height: 8.h),
-        // Author answer
-        Text(
-          '"${question.authorAnswer}"',
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w400,
-            color: AppColors.white70,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildProfileImage(User user) {
-    return Stack(
-      children: [
-        Container(
-          width: 50.w, // Slightly larger for better visibility
-          height: 50.w,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(
-            ),
-          ),
-          child: ClipOval(
-            child: Image.asset(
-              'assets/images/profileImage.jpg',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: AppColors.white20,
-                  child: Icon(
-                    Icons.person,
-                    color: AppColors.white,
-                    size: 28.sp,
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        if (user.isOnline)
-          Positioned(
-            bottom: 2,
-            right: 2,
-            child: Container(
-              width: 12.w,
-              height: 12.w,
-              decoration: const BoxDecoration(
-                color: AppColors.onlineGreen,
-                shape: BoxShape.circle,
+    return Container(
+      width: 50.w,
+      height: 50.w,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        // NO BORDER, NO GREEN DOT - completely clean!
+      ),
+      child: ClipOval(
+        child: Image.asset(
+          'assets/images/profileImage.jpg',
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: AppColors.white20,
+              child: Icon(
+                Icons.person,
+                color: AppColors.white,
+                size: 28.sp,
               ),
-            ),
-          ),
-      ],
+            );
+          },
+        ),
+      ),
     );
   }
 

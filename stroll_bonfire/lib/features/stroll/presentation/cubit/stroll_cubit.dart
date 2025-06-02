@@ -30,7 +30,7 @@ class StrollCubit extends Cubit<StrollState> {
       const question = Question(
         id: '1',
         text: 'What is your favorite time of the day?',
-        authorAnswer: 'Mine is definitely in the morning',
+        authorAnswer: 'Mine is definitely the peace in the morning.',
         options: [
           QuestionOption(
             id: '1',
