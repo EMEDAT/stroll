@@ -119,8 +119,8 @@ class OptionCard extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 24.w,
-                  height: 24.w,
+                  width: 20.w,
+                  height: 20.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: AppColors.white, width: 2),

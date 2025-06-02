@@ -7,10 +7,10 @@ import '../../../../core/utils/responsive_utils.dart';
 import '../cubit/stroll_cubit.dart';
 import '../cubit/stroll_state.dart';
 import '../widgets/stroll_header.dart';
-import '../widgets/profile_card.dart';
 import '../widgets/action_buttons.dart';
 import '../widgets/bottom_navigation.dart';
 import '../../domain/entities/question.dart';
+import '../../domain/entities/user.dart';
 
 /// Stroll Bonfire Page - Main screen for the stroll feature
 class StrollBonfirePage extends StatelessWidget {
@@ -34,11 +34,11 @@ class StrollBonfirePage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.0, 0.6, 1.0],
+              stops: const [0.0, 0.3, 1.0],
               colors: [
                 Colors.transparent,
-                Colors.black.withValues(alpha: 0.3),
-                Colors.black.withValues(alpha: 0.8),
+                Colors.black.withValues(alpha: 0.6),
+                Colors.black.withValues(alpha: 1.0), // Complete black coverage
               ],
             ),
           ),
@@ -77,28 +77,135 @@ class StrollBonfirePage extends StatelessWidget {
   }
 
   Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
-    return Padding(
-      padding: ResponsiveUtils.defaultScreenPadding,
-      child: Column(
-        children: [
-          SizedBox(height: 16.h),
-          const StrollHeader(),
-          SizedBox(height: 40.h),
-          ProfileCard(
-            user: state.currentUser,
-            question: state.currentQuestion,
+    return Column(
+      children: [
+        // Top section with header
+        Expanded(
+          flex: 45, // Reduced from 60% to 45%
+          child: Padding(
+            padding: ResponsiveUtils.defaultScreenPadding,
+            child: Column(
+              children: [
+                SizedBox(height: 16.h),
+                const StrollHeader(),
+                const Spacer(),
+              ],
+            ),
           ),
-          SizedBox(height: 40.h),
-          // Just the options grid without text
-          _buildOptionsGrid(context, state),
-          const Spacer(),
-          // Text and action buttons together at bottom
-          _buildBottomSection(context, state),
-          SizedBox(height: 30.h),
-          const BottomNavigation(),
-          SizedBox(height: 20.h),
-        ],
-      ),
+        ),
+        // Bottom section with content - MOVED UP!
+        Expanded(
+          flex: 55, // Increased from 40% to 55%
+          child: Padding(
+            padding: ResponsiveUtils.defaultScreenPadding,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildProfileSection(state.currentUser, state.currentQuestion),
+                SizedBox(height: 16.h), // Reduced spacing
+                _buildOptionsGrid(context, state),
+                SizedBox(height: 12.h), // Add small gap before bottom section
+                _buildBottomSection(context, state),
+                SizedBox(height: 16.h), // Reduced spacing
+                const BottomNavigation(),
+                SizedBox(height: 16.h), // Reduced bottom padding
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileSection(User user, Question question) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Profile image and name
+        Row(
+          children: [
+            _buildProfileImage(user),
+            SizedBox(width: 12.w), // Reduced spacing
+            Text(
+              '${user.name}, ${user.age}',
+              style: TextStyle(
+                fontSize: 11.sp, // Reduced from 24
+                fontWeight: FontWeight.w700,
+                color: AppColors.white,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h), // Reduced from 20
+        // Question text
+        Text(
+          question.text,
+          style: TextStyle(
+            fontSize: 20.sp, // Reduced from 32
+            fontWeight: FontWeight.w700,
+            color: AppColors.white,
+            height: 1.1, // Tighter line height
+          ),
+        ),
+        SizedBox(height: 8.h), // Reduced from 12
+        // Author answer
+        Text(
+          '"${question.authorAnswer}"',
+          style: TextStyle(
+            fontSize: 12.sp, // Reduced from 16
+            fontWeight: FontWeight.w400,
+            color: AppColors.white70,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildProfileImage(User user) {
+    return Stack(
+      children: [
+        Container(
+          width: 40.w, // Reduced from 60
+          height: 40.w, // Reduced from 60
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: user.isOnline ? AppColors.onlineGreen : AppColors.white40,
+              width: 2, // Reduced from 3
+            ),
+          ),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/images/profileImage.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppColors.white20,
+                  child: Icon(
+                    Icons.person,
+                    color: AppColors.white,
+                    size: 24.sp, // Reduced from 32
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        if (user.isOnline)
+          Positioned(
+            bottom: 2,
+            right: 2,
+            child: Container(
+              width: 10.w, // Reduced from 12
+              height: 10.w, // Reduced from 12
+              decoration: const BoxDecoration(
+                color: AppColors.onlineGreen,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+      ],
     );
   }
 
@@ -117,7 +224,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(0),
               ),
             ),
-            SizedBox(width: 12.w),
+            SizedBox(width: 8.w), // Reduced spacing
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -130,7 +237,7 @@ class StrollBonfirePage extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 8.h), // Reduced spacing
         Row(
           children: [
             Expanded(
@@ -143,7 +250,7 @@ class StrollBonfirePage extends StatelessWidget {
                 () => context.read<StrollCubit>().selectOption(2),
               ),
             ),
-            SizedBox(width: 12.w),
+            SizedBox(width: 8.w), // Reduced spacing
             Expanded(
               child: _buildOptionCard(
                 context,
@@ -166,53 +273,49 @@ class StrollBonfirePage extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 100.h, // Fixed height to prevent flex issues
-        padding: EdgeInsets.all(16.w),
+        height: 60.h, // Reduced from 100
+        padding: EdgeInsets.all(12.w), // Reduced padding
         decoration: BoxDecoration(
           color: isSelected 
               ? Colors.blue.withValues(alpha: 0.3) 
               : Colors.black.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(12.r), // Smaller radius
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.white.withValues(alpha: 0.3),
             width: isSelected ? 2 : 1,
           ),
         ),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min, // Prevent flex issues
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 24.w,
-                  height: 24.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.white, width: 2),
-                  ),
-                  child: Center(
-                    child: Text(
-                      label,
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+            Container(
+              width: 20.w, // Reduced from 24
+              height: 20.w, // Reduced from 24
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: AppColors.white, width: 1.5), // Thinner border
+              ),
+              child: Center(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 14.sp, // Reduced from 12
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              ],
+              ),
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 8.h), // Reduced spacing
             Expanded(
               child: Text(
                 questionOption.text,
                 style: TextStyle(
                   color: AppColors.white,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 1.3,
+                  fontSize: 14.sp, // Reduced from 14
+                  fontWeight: FontWeight.w400,
+                  height: 1.2, // Tighter line height
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
