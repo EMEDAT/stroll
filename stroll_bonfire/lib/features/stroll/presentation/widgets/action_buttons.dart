@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive_utils.dart';
 
-/// Action Buttons Widget - Bottom action buttons (skip, mic, next)
+/// Action Buttons Widget - Bottom action buttons (mic, next)
 class ActionButtons extends StatelessWidget {
   final bool isNextEnabled;
   final bool isProcessing;
@@ -27,13 +27,13 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ActionButton(
-          icon: Icons.mic,
+          iconPath: 'assets/icons/Microphone.png',
           color: AppColors.micBlue,
           onTap: onMic,
           isEnabled: !isProcessing,
         ),
         ActionButton(
-          icon: isProcessing ? Icons.hourglass_empty : Icons.arrow_forward,
+          iconPath: 'assets/icons/Next.png',
           color: AppColors.acceptGreen,
           onTap: isNextEnabled && !isProcessing ? onNext : null,
           isEnabled: isNextEnabled && !isProcessing,
@@ -43,16 +43,16 @@ class ActionButtons extends StatelessWidget {
   }
 }
 
-/// Action Button Widget - Individual circular action button
+/// Action Button Widget - Individual circular action button using PNG assets
 class ActionButton extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final Color color;
   final VoidCallback? onTap;
   final bool isEnabled;
 
   const ActionButton({
     super.key,
-    required this.icon,
+    required this.iconPath,
     required this.color,
     this.onTap,
     this.isEnabled = true,
@@ -77,10 +77,24 @@ class ActionButton extends StatelessWidget {
             ),
           ] : null,
         ),
-        child: Icon(
-          icon,
-          color: AppColors.white,
-          size: 28.sp,
+        child: Center(
+          child: Image.asset(
+            iconPath,
+            width: 28.w,
+            height: 28.w,
+            color: AppColors.white,
+            errorBuilder: (context, error, stackTrace) {
+              // Fallback to Flutter icons if PNG files don't load
+              IconData fallbackIcon = Icons.mic;
+              if (iconPath.contains('Next')) fallbackIcon = Icons.arrow_forward;
+              
+              return Icon(
+                fallbackIcon,
+                color: AppColors.white,
+                size: 28.sp,
+              );
+            },
+          ),
         ),
       ),
     );

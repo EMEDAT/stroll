@@ -9,24 +9,47 @@ class StrollHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        Text(
-          'Stroll Bonfire',
-          style: Theme.of(context).textTheme.headlineLarge,
+        // Main title with dropdown
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                colors: [
+                  Color(0xFFB794F6),
+                  Color(0xFF9F7AEA),
+                ],
+              ).createShader(bounds),
+              child: Text(
+                'Stroll Bonfire',
+                style: TextStyle(
+                  fontSize: 34.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Icon(
+              Icons.keyboard_arrow_down,
+              color: AppColors.white70,
+              size: 24.sp,
+            ),
+          ],
         ),
-        _buildStatsRow(),
-      ],
-    );
-  }
-
-  Widget _buildStatsRow() {
-    return Row(
-      children: [
-        _buildStatItem(Icons.location_on_outlined, '2 km'),
-        SizedBox(width: 16.w),
-        _buildStatItem(Icons.people_outline, '103'),
+        SizedBox(height: 8.h),
+        // Stats below title
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildStatItem(Icons.access_time, '22h 00m'),
+            SizedBox(width: 24.w),
+            _buildStatItem(Icons.people, '103'),
+          ],
+        ),
       ],
     );
   }
