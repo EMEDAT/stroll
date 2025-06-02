@@ -144,7 +144,7 @@ class StrollBonfirePage extends StatelessWidget {
             Text(
               '${user.name}, ${user.age}',
               style: TextStyle(
-                fontSize: 18.sp, // Slightly increased for better visibility
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColors.white,
               ),
@@ -156,7 +156,7 @@ class StrollBonfirePage extends StatelessWidget {
         Text(
           question.text,
           style: TextStyle(
-            fontSize: 24.sp, // Increased for better hierarchy
+            fontSize: 20.sp, // Increased for better hierarchy
             fontWeight: FontWeight.w700,
             color: AppColors.white,
             height: 1.1,
@@ -186,8 +186,6 @@ class StrollBonfirePage extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: user.isOnline ? AppColors.onlineGreen : AppColors.white40,
-              width: 2,
             ),
           ),
           child: ClipOval(
