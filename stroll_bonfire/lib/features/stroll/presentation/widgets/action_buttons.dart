@@ -27,7 +27,7 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ActionButton(
-          iconPath: 'assets/icons/Microphone.png',
+          iconPath: 'assets/icons/microphone.svg',
           color: AppColors.micBlue,
           onTap: onMic,
           isEnabled: !isProcessing,
