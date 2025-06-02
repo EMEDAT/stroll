@@ -83,14 +83,14 @@ class StrollBonfirePage extends StatelessWidget {
       children: [
         // Top section with header
         Expanded(
-          flex: 40, // Reduced to make more room for bottom
+          flex: 75, // Reduced to make more room for bottom
           child: Padding(
             padding: ResponsiveUtils.defaultScreenPadding,
             child: Column(
               children: [
                 const Spacer(flex: 1), // Push header down with spacer
                 const StrollHeader(),
-                const Spacer(flex: 2), // Small spacer at bottom
+                const Spacer(flex: 3), // Small spacer at bottom
               ],
             ),
           ),
