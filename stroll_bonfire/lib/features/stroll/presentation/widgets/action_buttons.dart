@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/responsive_utils.dart';
 
 /// Action Buttons Widget - Bottom action buttons (mic, next)
 class ActionButtons extends StatelessWidget {
@@ -25,17 +24,18 @@ class ActionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center, // ← CHANGED
       children: [
         ActionButton(
-          iconPath: '/icons/microphone.svg',
+          iconPath: 'assets/icons/microphone.svg',
           fallbackIcon: Icons.mic,
           onTap: onMic,
           isEnabled: !isProcessing,
           isNextButton: false,
         ),
+        SizedBox(width: 6.w), // ← ADD THIS GAP
         ActionButton(
-          iconPath: '/icons/next.svg',
+          iconPath: 'assets/icons/next.svg',
           fallbackIcon: Icons.arrow_forward,
           onTap: isNextEnabled && !isProcessing ? onNext : null,
           isEnabled: isNextEnabled && !isProcessing,
@@ -73,8 +73,8 @@ class ActionButton extends StatelessWidget {
 
   Widget _buildNextButton() {
     return Container(
-      width: ResponsiveUtils.actionButtonSize.width,
-      height: ResponsiveUtils.actionButtonSize.height,
+      width: 40.w, // Reduced from ResponsiveUtils.actionButtonSize.width
+      height: 40.w, // Reduced from ResponsiveUtils.actionButtonSize.height
       decoration: BoxDecoration(
         color: const Color(0xFF8B88EF), // Always full color, no fading
         shape: BoxShape.circle,
@@ -83,7 +83,7 @@ class ActionButton extends StatelessWidget {
         child: Icon(
           Icons.arrow_forward,
           color: Colors.black,
-          size: 32.sp,
+          size: 28.sp, // Reduced from 32.sp
         ),
       ),
     );
@@ -91,8 +91,8 @@ class ActionButton extends StatelessWidget {
 
   Widget _buildRegularButton() {
     return SizedBox(
-      width: ResponsiveUtils.actionButtonSize.width,
-      height: ResponsiveUtils.actionButtonSize.height,
+      width: 40.w, // Reduced size
+      height: 40.w, // Reduced size
       child: Builder(
         builder: (context) => FutureBuilder<bool>(
           future: _assetExists(context, iconPath),
@@ -101,16 +101,16 @@ class ActionButton extends StatelessWidget {
             if (snapshot.hasData && snapshot.data == true) {
               return SvgPicture.asset(
                 iconPath,
-                width: ResponsiveUtils.actionButtonSize.width,
-                height: ResponsiveUtils.actionButtonSize.height,
+                width: 40.w, // Reduced size
+                height: 40.w, // Reduced size
                 fit: BoxFit.contain,
               );
             }
             
             // Fallback to Flutter icon
             return Container(
-              width: ResponsiveUtils.actionButtonSize.width,
-              height: ResponsiveUtils.actionButtonSize.height,
+              width: 48.w, // Reduced size
+              height: 48.w, // Reduced size
               decoration: const BoxDecoration(
                 color: Colors.grey,
                 shape: BoxShape.circle,
@@ -118,7 +118,7 @@ class ActionButton extends StatelessWidget {
               child: Icon(
                 fallbackIcon,
                 color: AppColors.white,
-                size: 28.sp,
+                size: 24.sp, // Reduced from 28.sp
               ),
             );
           },

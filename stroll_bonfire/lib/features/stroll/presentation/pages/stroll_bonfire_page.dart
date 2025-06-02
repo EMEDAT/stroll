@@ -27,7 +27,7 @@ class StrollBonfirePage extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage('assets/images/Background.jpg'),
             fit: BoxFit.fitWidth,
-            alignment: Alignment(0.0, -1.5), // Push image way higher up
+            alignment: Alignment(0.0, -1.3), // Push image way higher up
           ),
         ),
         child: Container(
@@ -97,7 +97,7 @@ class StrollBonfirePage extends StatelessWidget {
         ),
         // Bottom section with content
         Expanded(
-          flex: 65, // Increased to accommodate more content
+          flex: 75, // Increased to accommodate more content
           child: Container(
             // Add extra dark overlay to bottom section for better readability
             decoration: BoxDecoration(
@@ -281,7 +281,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 50.h,
+        height: 60.h,
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: const Color(0xFF232A2E), // Background color #232A2E
@@ -338,7 +338,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     );
   }
 
-  Widget _buildBottomSection(BuildContext context, StrollLoaded state) {
+Widget _buildBottomSection(BuildContext context, StrollLoaded state) {
     return Row(
       children: [
         Expanded(
@@ -347,11 +347,19 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
             children: [
               Text(
                 'Pick your option.',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: TextStyle(
+                  fontSize: 12.sp, // Reduced to 12px
+                  color: const Color(0xFFE5E5E5), // Color #E5E5E5
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               Text(
                 'See who has a similar mind.',
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: TextStyle(
+                  fontSize: 12.sp, // Reduced to 12px
+                  color: const Color(0xFFE5E5E5), // Color #E5E5E5
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ],
           ),
