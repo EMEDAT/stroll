@@ -14,10 +14,12 @@ class BottomNavigation extends StatelessWidget {
       color: const Color(0xFF0F1115), // #0F1115 BACKGROUND
       padding: EdgeInsets.only(
         top: 8.h, // Reduced from 12.h to move closer to top
-        bottom: 4.h, // Keep bottom padding for safe area
+        bottom: 16.h, // Keep bottom padding for safe area
+        left: 10.0.w, // Add horizontal padding to stretch icons apart
+        right: 0.0.w, // Add horizontal padding to stretch icons apart
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Use spaceEvenly for wider spread
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Use spaceEvenly for wider spread
         children: [
           NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
           _buildIconWithBadge(
