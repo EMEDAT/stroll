@@ -35,15 +35,16 @@ class StrollBonfirePage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.0, 0.4, 0.7, 1.0], // More control points
-                colors: [
-                  Colors.transparent, // 0% - 40%: Completely transparent
-                  Colors.black.withValues(alpha: 0.5), // 40%: Light darkening starts
-                  Colors.black.withValues(alpha: 1), // 70%: Heavy darkening
-                  Colors.black.withValues(alpha: 1.0), // 100%: Complete black
-                ],
-            ),
+            stops: const [0.0, 0.4, 0.7, 0.9, 1.0], // Added 0.9 for the transition
+            colors: [
+              Colors.transparent, // 0% - 40%: Completely transparent
+              Colors.black.withValues(alpha: 0.5), // 40%: Light darkening starts
+              Colors.black.withValues(alpha: 1), // 70%: Heavy darkening
+              Colors.black.withValues(alpha: 1.0), // 90%: Complete black
+              const Color(0xFF0F1115), // 90% - 100%: #0F1115 for bottom 10%
+            ],
           ),
+        ),
           child: SafeArea(
             child: BlocBuilder<StrollCubit, StrollState>(
               builder: (context, state) {

@@ -2,42 +2,79 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../../core/constants/app_colors.dart';
-
-/// Bottom Navigation Widget - App bottom navigation bar  
+/// Bottom Navigation Widget - App bottom navigation bar with badges
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Container(
+      width: MediaQuery.of(context).size.width, // FULL SCREEN WIDTH
+      color: const Color(0xFF0F1115), // #0F1115 BACKGROUND
+      padding: EdgeInsets.symmetric(vertical: 12.h), // NO horizontal padding, only vertical
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Use spaceEvenly for wider spread
+        children: [
+          NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
+          _buildIconWithBadge(
+            NavIcon('assets/icons/fire.svg', Icons.local_fire_department, false), // Removed isFireIcon
+            showDot: true, // Dot for fire icon
+          ),
+          _buildIconWithBadge(
+            NavIcon('assets/icons/chat.svg', Icons.chat_bubble_outline, false),
+            count: 10, // Count badge for chat icon
+          ),
+          NavIcon('assets/icons/user.svg', Icons.person_outline, false),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to add badges to icons
+  Widget _buildIconWithBadge(Widget icon, {bool showDot = false, int? count}) {
+    return Stack(
+      clipBehavior: Clip.none,
       children: [
-        Expanded(
-          child: Center(
-            child: NavIcon('assets/icons/cards.svg', Icons.credit_card, false),
+        icon,
+        if (showDot) // Purple dot badge
+          Positioned(
+            top: 8.h,
+            right: 8.w,
+            child: Container(
+              width: 8.w,
+              height: 8.w,
+              decoration: const BoxDecoration(
+                color: Color(0xFFB5B2FF), // Background #B5B2FF
+                shape: BoxShape.circle,
+              ),
+            ),
           ),
-        ),
-        Expanded(
-          child: Center(
-            child: NavIcon('assets/icons/fire.svg', Icons.local_fire_department, true),
+        if (count != null) // Purple count badge
+          Positioned(
+            top: 6.h,
+            right: 6.w,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: const Color(0xFFB5B2FF), // Background #B5B2FF
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                count.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
-        ),
-        Expanded(
-          child: Center(
-            child: NavIcon('assets/icons/chat.svg', Icons.chat_bubble_outline, false),
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: NavIcon('assets/icons/user.svg', Icons.person_outline, false),
-          ),
-        ),
       ],
     );
   }
 }
 
-/// Navigation Icon Widget - Individual navigation icon with better error handling
+/// Navigation Icon Widget - Individual navigation icon (NON-CLICKABLE)
 class NavIcon extends StatelessWidget {
   final String iconPath;
   final IconData fallbackIcon;
@@ -47,9 +84,8 @@ class NavIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.all(12.w), // Increased padding for larger touch area
+    return Container( // Static container, no animations or gestures
+      padding: EdgeInsets.all(12.w),
       child: FutureBuilder<bool>(
         future: _assetExists(context, iconPath),
         builder: (context, snapshot) {
@@ -60,7 +96,7 @@ class NavIcon extends StatelessWidget {
               width: _getIconSize(),
               height: _getIconSize(),
               colorFilter: ColorFilter.mode(
-                isActive ? AppColors.white : AppColors.white60,
+                Colors.grey, // All icons same grey color
                 BlendMode.srcIn,
               ),
             );
@@ -69,7 +105,7 @@ class NavIcon extends StatelessWidget {
           // Fallback to Flutter icon
           return Icon(
             fallbackIcon,
-            color: isActive ? AppColors.white : AppColors.white60,
+            color: Colors.grey, // All icons same grey color
             size: _getIconSize(),
           );
         },
@@ -80,15 +116,15 @@ class NavIcon extends StatelessWidget {
   // Specific sizing for user icon to match others
   double _getIconSize() {
     if (iconPath.contains('user.svg')) {
-      return 45.w; // Larger size specifically for user icon
+      return 45.w;
     }
     if (iconPath.contains('fire.svg')) {
-      return 30.w; // Slightly larger for fire icon
+      return 30.w;
     }
     if (iconPath.contains('chat.svg')) {
-      return 25.w; // Slightly larger for chat icon
+      return 25.w;
     }
-    return 29.w; // Default size for other icons
+    return 29.w;
   }
 
   Future<bool> _assetExists(BuildContext context, String path) async {
