@@ -57,10 +57,10 @@ class BottomNavigation extends StatelessWidget {
           ),
         if (count != null) // Purple count badge
           Positioned(
-            top: 9.h,
-            right: 2.w,
+            top: 11.h,
+            right: 6.w,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 1.h),
+              padding: EdgeInsets.symmetric(horizontal: 4.5.w, vertical: 1.h),
               decoration: BoxDecoration(
                 color: const Color(0xFFB5B2FF), // Background #B5B2FF
                 borderRadius: BorderRadius.circular(8.r),
