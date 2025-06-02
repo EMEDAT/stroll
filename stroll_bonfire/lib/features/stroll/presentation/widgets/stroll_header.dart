@@ -14,29 +14,46 @@ class StrollHeader extends StatelessWidget {
         // Main title with dropdown
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center, // Vertical alignment middle
           children: [
             ShaderMask(
               shaderCallback: (bounds) => const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFFB794F6),
-                  Color(0xFF9F7AEA),
+                  Color(0xFFB3ADF6), // Top
+                  Color(0xFFCBC9FF), // Middle
+                  Color(0xFFCCC8FF), // Bottom
                 ],
               ).createShader(bounds),
               child: Text(
                 'Stroll Bonfire',
                 style: TextStyle(
-                  fontSize: 34.sp,
+                  fontFamily: 'Proxima Nova',
+                  fontSize: 34,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
-                  letterSpacing: -0.5,
+                  height: 1.0, // Line height 100%
+                  letterSpacing: 0,
                 ),
               ),
             ),
             SizedBox(width: 8.w),
-            Icon(
-              Icons.keyboard_arrow_down,
-              color: AppColors.white70,
-              size: 24.sp,
+            ShaderMask(
+              shaderCallback: (bounds) => const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFFB3ADF6), // Top
+                  Color(0xFFCBC9FF), // Middle
+                  Color(0xFFCCC8FF), // Bottom
+                ],
+              ).createShader(bounds),
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+                size: 24.sp,
+              ),
             ),
           ],
         ),
@@ -46,8 +63,8 @@ class StrollHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildStatItem(Icons.access_time, '22h 00m'),
-            SizedBox(width: 24.w),
-            _buildStatItem(Icons.people, '103'),
+            SizedBox(width: 6.w),
+            _buildStatItem(Icons.person, '103'),
           ],
         ),
       ],
@@ -60,15 +77,15 @@ class StrollHeader extends StatelessWidget {
         Icon(
           icon,
           color: AppColors.white70,
-          size: 16.sp,
+          size: 15.sp,
         ),
         SizedBox(width: 4.w),
         Text(
           text,
           style: TextStyle(
             color: AppColors.white70,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.w500,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],

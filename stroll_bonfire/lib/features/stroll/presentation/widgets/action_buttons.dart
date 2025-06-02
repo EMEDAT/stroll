@@ -30,83 +30,98 @@ class ActionButtons extends StatelessWidget {
         ActionButton(
           iconPath: '/icons/microphone.svg',
           fallbackIcon: Icons.mic,
-          color: AppColors.micBlue,
           onTap: onMic,
           isEnabled: !isProcessing,
+          isNextButton: false,
         ),
         ActionButton(
           iconPath: '/icons/next.svg',
           fallbackIcon: Icons.arrow_forward,
-          color: AppColors.acceptGreen,
           onTap: isNextEnabled && !isProcessing ? onNext : null,
           isEnabled: isNextEnabled && !isProcessing,
+          isNextButton: true,
         ),
       ],
     );
   }
 }
 
-/// Action Button Widget - Individual circular action button with better error handling
+/// Action Button Widget - Displays SVG as-is for mic, custom styling for next button
 class ActionButton extends StatelessWidget {
   final String iconPath;
   final IconData fallbackIcon;
-  final Color color;
   final VoidCallback? onTap;
   final bool isEnabled;
+  final bool isNextButton;
 
   const ActionButton({
     super.key,
     required this.iconPath,
     required this.fallbackIcon,
-    required this.color,
     this.onTap,
     this.isEnabled = true,
+    this.isNextButton = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: isEnabled ? onTap : null,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: ResponsiveUtils.actionButtonSize.width,
-        height: ResponsiveUtils.actionButtonSize.height,
-        decoration: BoxDecoration(
-          color: isEnabled ? color : color.withValues(alpha: 0.5),
-          shape: BoxShape.circle,
-          boxShadow: isEnabled ? [
-            BoxShadow(
-              color: color.withValues(alpha: 0.3),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ] : null,
+      child: isNextButton ? _buildNextButton() : _buildRegularButton(),
+    );
+  }
+
+  Widget _buildNextButton() {
+    return Container(
+      width: ResponsiveUtils.actionButtonSize.width,
+      height: ResponsiveUtils.actionButtonSize.height,
+      decoration: BoxDecoration(
+        color: const Color(0xFF8B88EF), // Always full color, no fading
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          Icons.arrow_forward,
+          color: Colors.black,
+          size: 28.sp,
         ),
-        child: Center(
-          child: FutureBuilder<bool>(
-            future: _assetExists(context, iconPath),
-            builder: (context, snapshot) {
-              // If asset exists, use SVG
-              if (snapshot.hasData && snapshot.data == true) {
-                return SvgPicture.asset(
-                  iconPath,
-                  width: 28.w,
-                  height: 28.w,
-                  colorFilter: ColorFilter.mode(
-                    AppColors.white,
-                    BlendMode.srcIn,
-                  ),
-                );
-              }
-              
-              // Fallback to Flutter icon
-              return Icon(
+      ),
+    );
+  }
+
+  Widget _buildRegularButton() {
+    return SizedBox(
+      width: ResponsiveUtils.actionButtonSize.width,
+      height: ResponsiveUtils.actionButtonSize.height,
+      child: Builder(
+        builder: (context) => FutureBuilder<bool>(
+          future: _assetExists(context, iconPath),
+          builder: (context, snapshot) {
+            // If asset exists, use SVG exactly as imported
+            if (snapshot.hasData && snapshot.data == true) {
+              return SvgPicture.asset(
+                iconPath,
+                width: ResponsiveUtils.actionButtonSize.width,
+                height: ResponsiveUtils.actionButtonSize.height,
+                fit: BoxFit.contain,
+              );
+            }
+            
+            // Fallback to Flutter icon
+            return Container(
+              width: ResponsiveUtils.actionButtonSize.width,
+              height: ResponsiveUtils.actionButtonSize.height,
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
                 fallbackIcon,
                 color: AppColors.white,
                 size: 28.sp,
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
