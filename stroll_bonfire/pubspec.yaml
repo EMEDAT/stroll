@@ -17,6 +17,7 @@ dependencies:
   injectable: ^2.5.0
   cached_network_image: ^3.4.1
   blur: ^4.0.0
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -31,3 +32,10 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    # Explicitly list SVG files to ensure they're included
+    - assets/icons/cards.svg
+    - assets/icons/chat.svg
+    - assets/icons/fire.svg
+    - assets/icons/microphone.svg
+    - assets/icons/next.svg
+    - assets/icons/user.svg

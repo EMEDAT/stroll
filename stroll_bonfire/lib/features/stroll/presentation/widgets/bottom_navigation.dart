@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
@@ -12,39 +13,45 @@ class BottomNavigation extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        NavIcon('assets/icons/cards.png', false),
-        NavIcon('assets/icons/Chat.png', false), 
-        NavIcon('assets/icons/Fire.png', true), // Active fire icon
-        NavIcon('assets/icons/User.png', false),
+        NavIcon('/icons/cards.svg', Icons.credit_card, false),
+        NavIcon('/icons/chat.svg', Icons.chat_bubble_outline, false), 
+        NavIcon('/icons/fire.svg', Icons.local_fire_department, true),
+        NavIcon('/icons/user.svg', Icons.person_outline, false),
       ],
     );
   }
 }
 
-/// Navigation Icon Widget - Individual navigation icon using PNG assets
+/// Navigation Icon Widget - Individual navigation icon with better error handling
 class NavIcon extends StatelessWidget {
   final String iconPath;
+  final IconData fallbackIcon;
   final bool isActive;
 
-  const NavIcon(this.iconPath, this.isActive, {super.key});
+  const NavIcon(this.iconPath, this.fallbackIcon, this.isActive, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       padding: EdgeInsets.all(8.w),
-      child: Image.asset(
-        iconPath,
-        width: 28.w,
-        height: 28.w,
-        color: isActive ? AppColors.white : AppColors.white60,
-        errorBuilder: (context, error, stackTrace) {
-          // Fallback to Flutter icons if PNG files don't load
-          IconData fallbackIcon = Icons.home;
-          if (iconPath.contains('Chat')) fallbackIcon = Icons.chat_bubble_outline;
-          if (iconPath.contains('Fire')) fallbackIcon = Icons.local_fire_department;
-          if (iconPath.contains('User')) fallbackIcon = Icons.person_outline;
+      child: FutureBuilder<bool>(
+        future: _assetExists(context, iconPath),
+        builder: (context, snapshot) {
+          // If asset exists, use SVG
+          if (snapshot.hasData && snapshot.data == true) {
+            return SvgPicture.asset(
+              iconPath,
+              width: 28.w,
+              height: 28.w,
+              colorFilter: ColorFilter.mode(
+                isActive ? AppColors.white : AppColors.white60,
+                BlendMode.srcIn,
+              ),
+            );
+          }
           
+          // Fallback to Flutter icon
           return Icon(
             fallbackIcon,
             color: isActive ? AppColors.white : AppColors.white60,
@@ -53,5 +60,15 @@ class NavIcon extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<bool> _assetExists(BuildContext context, String path) async {
+    try {
+      await DefaultAssetBundle.of(context).load(path);
+      return true;
+    } catch (e) {
+      debugPrint('Asset not found: $path');
+      return false;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/responsive_utils.dart';
@@ -27,13 +28,15 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ActionButton(
-          iconPath: 'assets/icons/microphone.svg',
+          iconPath: '/icons/microphone.svg',
+          fallbackIcon: Icons.mic,
           color: AppColors.micBlue,
           onTap: onMic,
           isEnabled: !isProcessing,
         ),
         ActionButton(
-          iconPath: 'assets/icons/Next.png',
+          iconPath: '/icons/next.svg',
+          fallbackIcon: Icons.arrow_forward,
           color: AppColors.acceptGreen,
           onTap: isNextEnabled && !isProcessing ? onNext : null,
           isEnabled: isNextEnabled && !isProcessing,
@@ -43,9 +46,10 @@ class ActionButtons extends StatelessWidget {
   }
 }
 
-/// Action Button Widget - Individual circular action button using PNG assets
+/// Action Button Widget - Individual circular action button with better error handling
 class ActionButton extends StatelessWidget {
   final String iconPath;
+  final IconData fallbackIcon;
   final Color color;
   final VoidCallback? onTap;
   final bool isEnabled;
@@ -53,6 +57,7 @@ class ActionButton extends StatelessWidget {
   const ActionButton({
     super.key,
     required this.iconPath,
+    required this.fallbackIcon,
     required this.color,
     this.onTap,
     this.isEnabled = true,
@@ -78,16 +83,23 @@ class ActionButton extends StatelessWidget {
           ] : null,
         ),
         child: Center(
-          child: Image.asset(
-            iconPath,
-            width: 28.w,
-            height: 28.w,
-            color: AppColors.white,
-            errorBuilder: (context, error, stackTrace) {
-              // Fallback to Flutter icons if PNG files don't load
-              IconData fallbackIcon = Icons.mic;
-              if (iconPath.contains('Next')) fallbackIcon = Icons.arrow_forward;
+          child: FutureBuilder<bool>(
+            future: _assetExists(context, iconPath),
+            builder: (context, snapshot) {
+              // If asset exists, use SVG
+              if (snapshot.hasData && snapshot.data == true) {
+                return SvgPicture.asset(
+                  iconPath,
+                  width: 28.w,
+                  height: 28.w,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.white,
+                    BlendMode.srcIn,
+                  ),
+                );
+              }
               
+              // Fallback to Flutter icon
               return Icon(
                 fallbackIcon,
                 color: AppColors.white,
@@ -98,5 +110,15 @@ class ActionButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> _assetExists(BuildContext context, String path) async {
+    try {
+      await DefaultAssetBundle.of(context).load(path);
+      return true;
+    } catch (e) {
+      debugPrint('Asset not found: $path');
+      return false;
+    }
   }
 }
