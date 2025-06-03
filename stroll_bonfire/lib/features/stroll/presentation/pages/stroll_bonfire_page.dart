@@ -172,9 +172,10 @@ class StrollBonfirePage extends StatelessWidget {
                     child: Text(
                       '${user.name}, ${user.age}',
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w700,
                         color: AppColors.white,
+                        letterSpacing: 1,
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -220,6 +221,7 @@ class StrollBonfirePage extends StatelessWidget {
                 fontWeight: FontWeight.w400, // 400 weight
                 color: const Color(0xFFCBC9FF).withValues(alpha: 0.7), // #CBC9FFB2 text color
                 fontStyle: FontStyle.italic, // Italic style
+                letterSpacing: 0.1,
               ),
             ),
           ),

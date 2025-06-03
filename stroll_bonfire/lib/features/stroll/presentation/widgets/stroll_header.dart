@@ -45,7 +45,7 @@ class _StrollHeaderState extends State<StrollHeader> {
                   'Stroll Bonfire',
                   style: TextStyle(
                     fontFamily: 'Proxima Nova',
-                    fontSize: 28.sp,
+                    fontSize: 34.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                     height: 1.0,
@@ -53,7 +53,7 @@ class _StrollHeaderState extends State<StrollHeader> {
                     shadows: [
                       Shadow(
                         offset: Offset(0, 2),
-                        blurRadius: 3,
+                        blurRadius: 1,
                         color: Colors.black.withValues(alpha: 0.5),
                       ),
                       Shadow(
@@ -114,9 +114,9 @@ class _StrollHeaderState extends State<StrollHeader> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildStatItem(Icons.access_time, '22h 00m'),
-                          SizedBox(width: 4.w),
-                          _buildStatItem(Icons.person, '103'),
+                          _buildStatItem('icons/Timer.png', '22h 00m'),
+                          SizedBox(width: 10.w),
+                          _buildStatItem('icons/Top-man.png', '103'),
                         ],
                       ),
                     ],
@@ -128,20 +128,32 @@ class _StrollHeaderState extends State<StrollHeader> {
     );
   }
 
-  Widget _buildStatItem(IconData icon, String text) {
+  Widget _buildStatItem(String imagePath, String text) {
     return Row(
       children: [
-        Icon(
-          icon,
-          color: AppColors.white70,
-          size: 12.sp,
-          shadows: [
-            Shadow(
-              offset: Offset(0, 1),
-              blurRadius: 4,
-              color: Colors.black.withValues(alpha: 0.3),
-            ),
-          ],
+        Image.asset(
+          imagePath,
+          width: 16.w,  // Increased from 12.w
+          height: 16.w, // Increased from 12.w
+          fit: BoxFit.contain,
+          errorBuilder: (context, error, stackTrace) {
+            // Fallback to icon if image fails to load
+            IconData fallbackIcon = imagePath.contains('Timer') 
+                ? Icons.access_time 
+                : Icons.person;
+            return Icon(
+              fallbackIcon,
+              color: AppColors.white70,
+              size: 12.sp,
+              shadows: [
+                Shadow(
+                  offset: Offset(0, 1),
+                  blurRadius: 4,
+                  color: Colors.black.withValues(alpha: 0.3),
+                ),
+              ],
+            );
+          },
         ),
         SizedBox(width: 3.w),
         Text(

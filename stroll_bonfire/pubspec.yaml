@@ -32,10 +32,13 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    # Explicitly list SVG files to ensure they're included
+    # SVG files
     - assets/icons/cards.svg
     - assets/icons/chat.svg
     - assets/icons/fire.svg
     - assets/icons/microphone.svg
     - assets/icons/next.svg
     - assets/icons/user.svg
+    # PNG files for timer section
+    - assets/icons/Timer.png
+    - assets/icons/Top-man.png
