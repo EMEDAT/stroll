@@ -38,8 +38,8 @@ class StrollBonfirePage extends StatelessWidget {
             stops: const [0.0, 0.4, 0.7, 0.9, 1.0], // Added 0.9 for the transition
             colors: [
               Colors.transparent, // 0% - 40%: Completely transparent
-              Colors.black.withValues(alpha: 0.5), // 40%: Light darkening starts
-              Colors.black.withValues(alpha: 1), // 70%: Heavy darkening
+              Colors.black.withValues(alpha: 0.6), // 40%: Light darkening starts
+              Colors.black.withValues(alpha: 1.0), // 100%: Heavy darkening
               Colors.black.withValues(alpha: 1.0), // 90%: Complete black
               const Color(0xFF0F1115), // 90% - 100%: #0F1115 for bottom 10%
             ],
@@ -98,7 +98,7 @@ class StrollBonfirePage extends StatelessWidget {
           ),
           // Bottom section with content - REMOVED SCROLLING
           Expanded(
-            flex: 68, // Increased from 68 to give more space for larger icons
+            flex: 75, // Increased from 68 to give more space for larger icons
             child: Container(
               // Add extra dark overlay to bottom section for better readability
               decoration: BoxDecoration(
@@ -143,7 +143,7 @@ class StrollBonfirePage extends StatelessWidget {
 
   Widget _buildProfileSection(User user, Question question) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w), // Added horizontal padding to entire profile section
+      padding: EdgeInsets.symmetric(horizontal: 8.w), // Added horizontal padding to entire profile section
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -191,7 +191,7 @@ class StrollBonfirePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 16.h), // REDUCED from 20.h to 16.h
-                          SizedBox(height: 4.h), // REDUCED from 6.h to 4.h
+                          SizedBox(height: 8.h), // REDUCED from 6.h to 4.h
                           Text(
                             question.text,
                             style: TextStyle(
@@ -199,7 +199,7 @@ class StrollBonfirePage extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                               color: AppColors.white,
                               height: 1.3,
-                              letterSpacing: 0,
+                              letterSpacing: 1.0,
                             ),
                           ),
                         ],
@@ -223,6 +223,7 @@ class StrollBonfirePage extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 8.h),
         ],
       ),
     );
