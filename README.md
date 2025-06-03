@@ -1,4 +1,4 @@
-# Stroll Bonfire 🔥
+# Stroll Bonfire- TASK 1 🔥
 
 A beautiful social connection app built with Flutter that replicates a sophisticated dating/social app interface with pixel-perfect design implementation.
 
@@ -53,10 +53,9 @@ A beautiful social connection app built with Flutter that replicates a sophistic
 - **Pixel-Perfect UI**: Exact replication of Figma design specifications
 - **Social Matching**: Interactive question-based matching system
 - **Real-time State Management**: Built with Flutter Bloc pattern
-- **Responsive Design**: Optimized for all device sizes
+- **Responsive Design**: Optimized for major device sizes
 - **Glassmorphism Effects**: Modern UI with blur effects and transparency
 - **Smooth Animations**: Fluid transitions and micro-interactions
-- **Voice Message Support**: Audio interaction capabilities
 - **Production Ready**: Clean architecture and maintainable code
 
 ## 🏗️ Architecture
@@ -116,7 +115,7 @@ lib/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/stroll_bonfire.git
+   git clone https://github.com/EMEDAT/stroll.git
    cd stroll_bonfire
    ```
 
@@ -137,6 +136,9 @@ lib/
    
    # For Android
    flutter run -d android
+
+   # For Chrome
+   flutter run -d chrome
    
    # For specific device
    flutter run -d [device-id]
@@ -302,8 +304,9 @@ jobs:
 ## 🐛 Known Issues & Limitations
 
 - **iOS 15**: Minor shadow rendering differences
-- **Android API 21**: Limited blur effect support
 - **Memory**: Large background images on older devices
+- **Android**: Screens with large width and short height have limited background image offset.
+
 
 ## 🔮 Future Enhancements
 
@@ -337,9 +340,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support and questions:
 
-- **Email**: support@strollbonfire.com
-- **Issues**: [GitHub Issues](https://github.com/yourusername/stroll_bonfire/issues)
-- **Documentation**: [GitHub Issues](https://github.com/yourusername/stroll_bonfire/issues)
+- **Email**: emedattitus24@gmail.com
+- **Issues**: [GitHub Issues](https://github.com/EMEDAT/stroll_bonfire/issues)
+- **Documentation**: [GitHub README.md](https://github.com/EMEDAT/stroll/blob/EMEDAT24/README.md)
 
 ## 🙏 Acknowledgments
 
@@ -349,6 +352,8 @@ For support and questions:
 - Open source packages used in this project
 
 ---
+
+**DEVELOPER: Emediong Titus**
 
 **Built with ❤️ using Flutter**
 
