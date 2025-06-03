@@ -18,16 +18,24 @@ class StrollBonfirePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final aspectRatio = screenWidth / screenHeight;
+    
+    // For wider screens with smaller heights (landscape-ish aspect ratios)
+    final isWideScreen = aspectRatio > 0.7;
+    final backgroundAlignment = isWideScreen ? Alignment(0.0, -2.5) : Alignment(0.0, -1.8);
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/Background.jpg'),
             fit: BoxFit.fitWidth,
-            alignment: Alignment(0.0, -1.8), // Push image way higher up
+            alignment: backgroundAlignment, // Dynamic alignment based on screen
           ),
         ),
         child: Container(
@@ -80,6 +88,14 @@ class StrollBonfirePage extends StatelessWidget {
   }
 
 Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final aspectRatio = screenWidth / screenHeight;
+    
+    // For wider screens with smaller heights, give more spacing
+    final isWideScreen = aspectRatio > 0.7;
+    final bottomSpacing = isWideScreen ? 20.h : 8.h;
+    
     return Column(
       children: [
         // Top section with header
@@ -111,25 +127,25 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                 ],
               ),
             ),
-            child: Column( // Changed from SingleChildScrollView to Column
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Prevent overflow
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Content section with padding
+                // Content section with padding - NO SCROLLING
                 Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: ResponsiveUtils.defaultScreenPadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildProfileSection(state.currentUser, state.currentQuestion),
-                          SizedBox(height: 10.h), // Further reduced spacing
-                          _buildOptionsGrid(context, state),
-                          SizedBox(height: 6.h), // Further reduced spacing
-                          _buildBottomSection(context, state),
-                          SizedBox(height: 16.h), // Space before bottom nav
-                        ],
-                      ),
+                  child: Padding(
+                    padding: ResponsiveUtils.defaultScreenPadding,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min, // Prevent overflow
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(child: _buildProfileSection(state.currentUser, state.currentQuestion)),
+                        SizedBox(height: 6.h), // Reduced spacing
+                        Flexible(child: _buildOptionsGrid(context, state)),
+                        SizedBox(height: 4.h), // Reduced spacing
+                        _buildBottomSection(context, state),
+                        SizedBox(height: bottomSpacing), // Dynamic spacing based on screen
+                      ],
                     ),
                   ),
                 ),
@@ -145,19 +161,20 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
 
   Widget _buildProfileSection(User user, Question question) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w), // Added horizontal padding to entire profile section
+      padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Column(
+        mainAxisSize: MainAxisSize.min, // Prevent overflow
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Profile image and name
           Padding(
-            padding: EdgeInsets.only(top: 40.h), // Increased from 20.h to 40.h for more visible movement
+            padding: EdgeInsets.only(top: 20.h), // Reduced from 40.h to save space
             child: Stack(
-              clipBehavior: Clip.none, // Allow overflow
+              clipBehavior: Clip.none,
               children: [
                 // Name container (behind - first layer)
                 Positioned(
-                  left: 28.w, // Position to go behind image
+                  left: 28.w,
                   top: 0,
                   child: Container(
                     width: 130.w,
@@ -168,7 +185,7 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                       bottom: 4.h
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D0F11), // Background #0D0F11
+                      color: const Color(0xFF0D0F11),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
@@ -190,10 +207,11 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Column(
+                        mainAxisSize: MainAxisSize.min, // Prevent overflow
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 20.h), // Reduced from 30.h - less space for name background
-                          SizedBox(height: 6.h), // Reduced from 8.h - smaller gap between name and question
+                          SizedBox(height: 12.h), // Reduced from 20.h
+                          SizedBox(height: 4.h), // Reduced from 6.h
                           Text(
                             question.text,
                             style: TextStyle(
@@ -212,16 +230,16 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
               ],
             ),
           ),
-          SizedBox(height: 12.h), // Spacing before author answer
+          SizedBox(height: 6.h), // Reduced from 8.h to eliminate final 1.6px overflow
           // Author answer (centered on its own)
           Center(
             child: Text(
               '"${question.authorAnswer}"',
               style: TextStyle(
-                fontSize: 12.sp, // 12px as requested
-                fontWeight: FontWeight.w400, // 400 weight
-                color: const Color(0xFFCBC9FF).withValues(alpha: 0.7), // #CBC9FFB2 text color
-                fontStyle: FontStyle.italic, // Italic style
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: const Color(0xFFCBC9FF).withValues(alpha: 0.7),
+                fontStyle: FontStyle.italic,
               ),
             ),
           ),
@@ -265,6 +283,7 @@ Widget _buildProfileImage(User user) {
 
 Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     return Column(
+      mainAxisSize: MainAxisSize.min, // Prevent overflow
       children: [
         Row(
           children: [
@@ -291,7 +310,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 4.h), // Reduced from 8.h to eliminate overflow
         Row(
           children: [
             Expanded(
@@ -327,7 +346,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 60.h,
+        height: 56.h, // Reduced from 60.h to save space
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: const Color(0xFF232A2E), // Background color #232A2E

@@ -13,8 +13,8 @@ class BottomNavigation extends StatelessWidget {
       width: MediaQuery.of(context).size.width, // FULL SCREEN WIDTH
       color: const Color(0xFF0F1115), // #0F1115 BACKGROUND
       padding: EdgeInsets.only(
-        top: 8.h, // Reduced from 12.h to move closer to top
-        bottom: 16.h, // Keep bottom padding for safe area
+        top: 2.h, // Reduced from 12.h to move closer to top
+        bottom: 6.h, // Keep bottom padding for safe area
         left: 10.0.w, // Add horizontal padding to stretch icons apart
         right: 0.0.w, // Add horizontal padding to stretch icons apart
       ),
