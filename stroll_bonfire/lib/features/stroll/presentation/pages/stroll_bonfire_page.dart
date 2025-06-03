@@ -98,7 +98,7 @@ class StrollBonfirePage extends StatelessWidget {
           ),
           // Bottom section with content - REMOVED SCROLLING
           Expanded(
-            flex: 68, // Increased from 75 to give more space for larger icons
+            flex: 68, // Increased from 68 to give more space for larger icons
             child: Container(
               // Add extra dark overlay to bottom section for better readability
               decoration: BoxDecoration(
