@@ -18,24 +18,16 @@ class StrollBonfirePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final aspectRatio = screenWidth / screenHeight;
-    
-    // For wider screens with smaller heights (landscape-ish aspect ratios)
-    final isWideScreen = aspectRatio > 0.7;
-    final backgroundAlignment = isWideScreen ? Alignment(0.0, -2.5) : Alignment(0.0, -1.8);
-    
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/Background.jpg'),
             fit: BoxFit.fitWidth,
-            alignment: backgroundAlignment, // Dynamic alignment based on screen
+            alignment: Alignment(0.0, -1.8), // Push image way higher up
           ),
         ),
         child: Container(
@@ -87,94 +79,83 @@ class StrollBonfirePage extends StatelessWidget {
     );
   }
 
-Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final aspectRatio = screenWidth / screenHeight;
-    
-    // For wider screens with smaller heights, give more spacing
-    final isWideScreen = aspectRatio > 0.7;
-    final bottomSpacing = isWideScreen ? 20.h : 8.h;
-    
-    return Column(
-      children: [
-        // Top section with header
-        Expanded(
-          flex: 65, // Reduced from 75 to give more space to bottom
-          child: Padding(
-            padding: ResponsiveUtils.defaultScreenPadding,
-            child: Column(
-              children: [
-                const Spacer(flex: 1), // Push header down with spacer
-                const StrollHeader(),
-                const Spacer(flex: 3), // Small spacer at bottom
-              ],
-            ),
-          ),
-        ),
-        // Bottom section with content
-        Expanded(
-          flex: 80, // Increased from 75 to give more space for larger icons
-          child: Container(
-            // Add extra dark overlay to bottom section for better readability
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withValues(alpha: 0.3),
+  Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
+      return Column(
+        children: [
+          // Top section with header
+          Expanded(
+            flex: 65, // Reduced from 75 to give more space to bottom
+            child: Padding(
+              padding: ResponsiveUtils.defaultScreenPadding,
+              child: Column(
+                children: [
+                  const Spacer(flex: 1), // Push header down with spacer
+                  const StrollHeader(),
+                  const Spacer(flex: 3), // Small spacer at bottom
                 ],
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Prevent overflow
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Content section with padding - NO SCROLLING
-                Expanded(
-                  child: Padding(
-                    padding: ResponsiveUtils.defaultScreenPadding,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min, // Prevent overflow
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(child: _buildProfileSection(state.currentUser, state.currentQuestion)),
-                        SizedBox(height: 6.h), // Reduced spacing
-                        Flexible(child: _buildOptionsGrid(context, state)),
-                        SizedBox(height: 4.h), // Reduced spacing
-                        _buildBottomSection(context, state),
-                        SizedBox(height: bottomSpacing), // Dynamic spacing based on screen
-                      ],
+          ),
+          // Bottom section with content - REMOVED SCROLLING
+          Expanded(
+            flex: 70, // Increased from 75 to give more space for larger icons
+            child: Container(
+              // Add extra dark overlay to bottom section for better readability
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withValues(alpha: 0.3),
+                  ],
+                ),
+              ),
+              child: Column( // Fixed layout without scrolling
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Content section with padding - REMOVED SingleChildScrollView
+                  Expanded(
+                    child: Padding(
+                      padding: ResponsiveUtils.defaultScreenPadding,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildProfileSection(state.currentUser, state.currentQuestion),
+                          SizedBox(height: 4.h), // REDUCED from 6.h to 4.h
+                          _buildOptionsGrid(context, state),
+                          SizedBox(height: 12.h), // INCREASED from 2.h to 12.h - more space before action buttons
+                          _buildBottomSection(context, state),
+                          // REMOVED the extra spacing before bottom nav
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                // Bottom navigation without padding - full width
-                const BottomNavigation(),
-              ],
+                  // Bottom navigation without padding - full width
+                  const BottomNavigation(),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
-    );
-  }
+        ],
+      );
+    }
 
   Widget _buildProfileSection(User user, Question question) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w), // Added horizontal padding to entire profile section
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Prevent overflow
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Profile image and name
           Padding(
-            padding: EdgeInsets.only(top: 20.h), // Reduced from 40.h to save space
+            padding: EdgeInsets.only(top: 25.h), // REDUCED from 40.h to 25.h to save 15px
             child: Stack(
-              clipBehavior: Clip.none,
+              clipBehavior: Clip.none, // Allow overflow
               children: [
                 // Name container (behind - first layer)
                 Positioned(
-                  left: 28.w,
+                  left: 28.w, // Position to go behind image
                   top: 0,
                   child: Container(
                     width: 130.w,
@@ -185,7 +166,7 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                       bottom: 4.h
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0D0F11),
+                      color: const Color(0xFF0D0F11), // Background #0D0F11
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Text(
@@ -207,11 +188,10 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min, // Prevent overflow
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(height: 12.h), // Reduced from 20.h
-                          SizedBox(height: 4.h), // Reduced from 6.h
+                          SizedBox(height: 16.h), // REDUCED from 20.h to 16.h
+                          SizedBox(height: 4.h), // REDUCED from 6.h to 4.h
                           Text(
                             question.text,
                             style: TextStyle(
@@ -230,16 +210,16 @@ Widget _buildLoadedContent(BuildContext context, StrollLoaded state) {
               ],
             ),
           ),
-          SizedBox(height: 6.h), // Reduced from 8.h to eliminate final 1.6px overflow
+          SizedBox(height: 8.h), // REDUCED from 12.h to 8.h
           // Author answer (centered on its own)
           Center(
             child: Text(
               '"${question.authorAnswer}"',
               style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: const Color(0xFFCBC9FF).withValues(alpha: 0.7),
-                fontStyle: FontStyle.italic,
+                fontSize: 12.sp, // 12px as requested
+                fontWeight: FontWeight.w400, // 400 weight
+                color: const Color(0xFFCBC9FF).withValues(alpha: 0.7), // #CBC9FFB2 text color
+                fontStyle: FontStyle.italic, // Italic style
               ),
             ),
           ),
@@ -283,7 +263,6 @@ Widget _buildProfileImage(User user) {
 
 Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
     return Column(
-      mainAxisSize: MainAxisSize.min, // Prevent overflow
       children: [
         Row(
           children: [
@@ -310,7 +289,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
             ),
           ],
         ),
-        SizedBox(height: 4.h), // Reduced from 8.h to eliminate overflow
+        SizedBox(height: 8.h), // REDUCED from 12.h to 8.h
         Row(
           children: [
             Expanded(
@@ -346,7 +325,7 @@ Widget _buildOptionsGrid(BuildContext context, StrollLoaded state) {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        height: 56.h, // Reduced from 60.h to save space
+        height: 60.h,
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: const Color(0xFF232A2E), // Background color #232A2E
