@@ -20,7 +20,7 @@ class StrollCubit extends Cubit<StrollState> {
       // Mock user data
       const user = User(
         id: '1',
-        name: 'Angelko',
+        name: 'Angelina',
         age: 28,
         profileImageUrl: 'assets/images/profileImage.jpg',
         isOnline: true,
@@ -46,13 +46,13 @@ class StrollCubit extends Cubit<StrollState> {
           ),
           QuestionOption(
             id: '3',
-            text: 'Wind down time\nafter dinners',
+            text: 'Wind-down time\nafter dinners',
             icon: Icons.restaurant_outlined,
             backgroundColor: AppColors.dinnerBg,
           ),
           QuestionOption(
             id: '4',
-            text: 'The serenity past\nmidnight',
+            text: 'The serenity \npast midnight',
             icon: Icons.nightlight_round_outlined,
             backgroundColor: AppColors.midnightBg,
           ),

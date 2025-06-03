@@ -161,7 +161,7 @@ class StrollBonfirePage extends StatelessWidget {
                     width: 130.w,
                     padding: EdgeInsets.only(
                       left: 50.w,
-                      right: 16.w,
+                      right: 10.w,
                       top: 4.h, 
                       bottom: 4.h
                     ),
